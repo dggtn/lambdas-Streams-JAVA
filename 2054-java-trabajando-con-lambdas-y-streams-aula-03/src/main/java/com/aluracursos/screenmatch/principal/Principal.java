@@ -1,5 +1,6 @@
 package com.aluracursos.screenmatch.principal;
 
+import ch.qos.logback.core.encoder.JsonEscapeUtil;
 import com.aluracursos.screenmatch.model.DatosEpisodio;
 import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
@@ -18,7 +19,8 @@ public class Principal {
     private final String URL_BASE = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=4fc7c187";
     private ConvierteDatos conversor = new ConvierteDatos();
-    public void muestraElMenu(){
+
+    public void muestraElMenu() {
         System.out.println("Escribe el nombre de la série que deseas buscar");
         //Busca los datos generales de las series
         var nombreSerie = teclado.nextLine();
@@ -54,11 +56,11 @@ public class Principal {
         System.out.println("\n Top 5 episodios");
         datosEpisodios.stream()
                 .filter(e -> !e.evaluacion().equalsIgnoreCase("N/A"))
-                .peek(e-> System.out.println("Primer filtro (N/A)"+e))
+                .peek(e -> System.out.println("Primer filtro (N/A)" + e))
                 .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
-                .peek(e-> System.out.println("Segundo ordenacion (M>m)"+e))
-                .map(e->e.titulo().toUpperCase())
-                .peek(e-> System.out.println("Segundo ordenacion (M>m)"+e))
+                .peek(e -> System.out.println("Segundo ordenacion (M>m)" + e))
+                .map(e -> e.titulo().toUpperCase())
+                .peek(e -> System.out.println("Segundo ordenacion (M>m)" + e))
                 .limit(5)
                 .forEach(System.out::println);
 
@@ -86,7 +88,7 @@ public class Principal {
                                 " Fecha de Lanzamiento: " + e.getFechaDeLanzamiento().format(dtf)
                 ));
         //Busca episodios por pedazo de titulo:
-        System.out.println("Por favor escriba el titulo del episodio que desea ver");
+       /*/ System.out.println("Por favor escriba el titulo del episodio que desea ver");
         var pedazoTitulo = teclado.nextLine();
         Optional<Episodio> episodioBuscado = episodios.stream()
                 .filter(e ->e.getTitulo().contains(pedazoTitulo.toUpperCase()))
@@ -96,7 +98,11 @@ public class Principal {
             System.out.println("Los datos son "+episodioBuscado.get());
         }else{
             System.out.println("Episodio no encontrado");
-        }
-
+        }/*/
+        Map<Integer,Double>evaluacionesPorTemporada = episodios.stream()
+                .filter(e->e.getEvaluacion()>0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada,Collectors.averagingDouble(Episodio::getEvaluacion)));
+        System.out.println(evaluacionesPorTemporada);
     }
-}
+
+    };
