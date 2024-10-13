@@ -54,7 +54,11 @@ public class Principal {
         System.out.println("\n Top 5 episodios");
         datosEpisodios.stream()
                 .filter(e -> !e.evaluacion().equalsIgnoreCase("N/A"))
+                .peek(e-> System.out.println("Primer filtro (N/A)"+e))
                 .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+                .peek(e-> System.out.println("Segundo ordenacion (M>m)"+e))
+                .map(e->e.titulo().toUpperCase())
+                .peek(e-> System.out.println("Segundo ordenacion (M>m)"+e))
                 .limit(5)
                 .forEach(System.out::println);
 
@@ -81,6 +85,18 @@ public class Principal {
                                 " Episodio: " + e.getTitulo() +
                                 " Fecha de Lanzamiento: " + e.getFechaDeLanzamiento().format(dtf)
                 ));
+        //Busca episodios por pedazo de titulo:
+        System.out.println("Por favor escriba el titulo del episodio que desea ver");
+        var pedazoTitulo = teclado.nextLine();
+        Optional<Episodio> episodioBuscado = episodios.stream()
+                .filter(e ->e.getTitulo().contains(pedazoTitulo.toUpperCase()))
+                .findFirst();
+        if(episodioBuscado.isPresent()){
+            System.out.println("Episodio encontrado");
+            System.out.println("Los datos son "+episodioBuscado.get());
+        }else{
+            System.out.println("Episodio no encontrado");
+        }
 
     }
 }
