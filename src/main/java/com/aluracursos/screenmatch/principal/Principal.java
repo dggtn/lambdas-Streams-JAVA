@@ -1,6 +1,6 @@
 package com.aluracursos.screenmatch.principal;
 
-import ch.qos.logback.core.encoder.JsonEscapeUtil;
+
 import com.aluracursos.screenmatch.model.DatosEpisodio;
 import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
@@ -87,18 +87,6 @@ public class Principal {
                                 " Episodio: " + e.getTitulo() +
                                 " Fecha de Lanzamiento: " + e.getFechaDeLanzamiento().format(dtf)
                 ));
-        //Busca episodios por pedazo de titulo:
-       /*/ System.out.println("Por favor escriba el titulo del episodio que desea ver");
-        var pedazoTitulo = teclado.nextLine();
-        Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(e ->e.getTitulo().contains(pedazoTitulo.toUpperCase()))
-                .findFirst();
-        if(episodioBuscado.isPresent()){
-            System.out.println("Episodio encontrado");
-            System.out.println("Los datos son "+episodioBuscado.get());
-        }else{
-            System.out.println("Episodio no encontrado");
-        }/*/
 
         DoubleSummaryStatistics est = episodios.stream()
                 .filter(e->e.getEvaluacion()>0.0)
